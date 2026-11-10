@@ -1,0 +1,415 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WebCraft - учимся создавать сайты</title>
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <style>
+    :root {
+      --ink: #20302d;
+      --green: #234c43;
+      --green-dark: #183b34;
+      --lime: #d6ef82;
+      --paper: #f5f4ee;
+      --muted: #68736e;
+      --line: #e2e5dc;
+    }
+
+    html { scroll-behavior: smooth; }
+    body { color: var(--ink); background: #fff; font-family: Arial, sans-serif; }
+    a { text-decoration: none; }
+
+    .site-nav { background: #fff; border-bottom: 1px solid var(--line); }
+    .brand-mark {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 34px; height: 34px; margin-right: 8px; border-radius: 9px;
+      background: var(--green); color: var(--lime); font-weight: 700;
+    }
+    .navbar-brand { color: var(--ink); font-weight: 700; letter-spacing: .2px; }
+    .navbar-brand:hover { color: var(--green); }
+    .site-nav .nav-link { color: #56625d; }
+    .site-nav .nav-link:hover { color: var(--green); }
+    .btn-green { background: var(--green); border-color: var(--green); color: #fff; }
+    .btn-green:hover, .btn-green:focus { background: var(--green-dark); border-color: var(--green-dark); color: #fff; }
+    .btn-lime { background: var(--lime); border-color: var(--lime); color: var(--ink); font-weight: 600; }
+    .btn-lime:hover { background: #c7e36e; border-color: #c7e36e; color: var(--ink); }
+    .btn-outline-green { border-color: var(--green); color: var(--green); }
+    .btn-outline-green:hover { background: var(--green); color: #fff; }
+
+    .hero { background: var(--green); color: #fff; overflow: hidden; }
+    .hero-inner { padding-top: 76px; padding-bottom: 76px; }
+    .hero-label { color: var(--lime); font-size: .82rem; letter-spacing: 1.4px; text-transform: uppercase; }
+    .hero h1 { max-width: 650px; font-size: clamp(2.25rem, 5vw, 4.4rem); line-height: 1.05; font-weight: 700; }
+    .hero-copy { max-width: 540px; color: #d9e4df; font-size: 1.08rem; }
+    .hero-card {
+      max-width: 420px; margin-left: auto; padding: 25px; color: var(--ink);
+      border-radius: 18px; background: var(--paper); transform: rotate(1deg);
+      box-shadow: 14px 16px 0 rgba(13, 37, 31, .18);
+    }
+    .hero-card-top { display: flex; justify-content: space-between; align-items: center; padding-bottom: 16px; border-bottom: 1px solid #dfe3d8; }
+    .code-line { padding: 10px 12px; margin-top: 10px; border-radius: 7px; background: #e8ece2; font-family: Consolas, monospace; font-size: .9rem; }
+    .code-line span { color: #537d56; }
+    .hero-note { color: #5d6b64; font-size: .85rem; }
+
+    .notice-wrap { margin-top: -22px; position: relative; }
+    .notice { border: 0; border-radius: 10px; box-shadow: 0 5px 18px rgba(26, 50, 42, .08); }
+    .section-space { padding-top: 76px; padding-bottom: 76px; }
+    .eyebrow { color: #6c8b4c; font-size: .78rem; font-weight: 700; letter-spacing: 1.4px; text-transform: uppercase; }
+    .section-heading { font-size: clamp(1.8rem, 3vw, 2.5rem); font-weight: 700; }
+    .section-lead { color: var(--muted); max-width: 650px; }
+
+    .course-card { height: 100%; border: 1px solid var(--line); border-radius: 13px; overflow: hidden; transition: transform .2s, box-shadow .2s; }
+    .course-card:hover { transform: translateY(-4px); box-shadow: 0 12px 24px rgba(30, 55, 45, .09); }
+    .course-top { min-height: 106px; padding: 20px; background: var(--paper); }
+    .course-number { color: #82917f; font-size: .8rem; }
+    .course-symbol { display: inline-flex; width: 42px; height: 42px; align-items: center; justify-content: center; border-radius: 11px; background: var(--green); color: var(--lime); font-size: 1.2rem; font-weight: 700; }
+    .course-card .card-title { font-size: 1.2rem; font-weight: 700; }
+    .course-card .card-text { color: var(--muted); min-height: 74px; }
+    .course-meta { font-size: .9rem; color: var(--muted); }
+    .course-card .card-body { display: flex; flex-direction: column; padding: 22px; }
+    .course-card .btn { margin-top: auto; }
+
+    .soft-section { background: var(--paper); }
+    .learning-tabs .nav-link { color: var(--green); border-radius: 8px; }
+    .learning-tabs .nav-link.active { background: var(--green); color: #fff; }
+    .tab-panel { min-height: 180px; padding: 22px; background: #fff; border: 1px solid var(--line); border-radius: 12px; }
+    .step-number { display: inline-flex; width: 32px; height: 32px; align-items: center; justify-content: center; border-radius: 50%; background: var(--lime); color: var(--ink); font-weight: 700; }
+
+    .work-card { border: 0; border-radius: 14px; overflow: hidden; background: #f0f2ea; }
+    .mock-window { height: 195px; padding: 15px; background: #e5e9dd; }
+    .mock-bar { height: 13px; width: 100%; border-radius: 10px; background: #fff; margin-bottom: 12px; }
+    .mock-hero { height: 95px; padding: 15px; border-radius: 8px; background: var(--green); color: #fff; }
+    .mock-hero i { display: block; width: 55%; height: 8px; margin: 9px 0; border-radius: 5px; background: var(--lime); }
+    .mock-blocks { display: flex; gap: 8px; margin-top: 9px; }
+    .mock-blocks span { height: 34px; flex: 1; background: #fff; border-radius: 5px; }
+    .carousel-control-prev, .carousel-control-next { width: 8%; }
+    .carousel-control-prev-icon, .carousel-control-next-icon { background-color: var(--green); border-radius: 50%; background-size: 55%; }
+    .carousel-indicators [data-bs-target] { background-color: var(--green); }
+
+    .accordion-item { border-color: var(--line); }
+    .accordion-button { color: var(--ink); font-weight: 600; }
+    .accordion-button:not(.collapsed) { color: var(--green); background: #f0f4e7; box-shadow: none; }
+    .accordion-button:focus { box-shadow: 0 0 0 .2rem rgba(35, 76, 67, .12); }
+
+    .signup-section { background: var(--green-dark); color: #fff; }
+    .signup-section .section-lead { color: #d0dcd5; }
+    .signup-card { background: #fff; color: var(--ink); border-radius: 14px; padding: 28px; }
+    .form-label { font-weight: 600; font-size: .93rem; }
+    .form-control:focus, .form-select:focus { border-color: #7da18a; box-shadow: 0 0 0 .2rem rgba(35, 76, 67, .13); }
+    .form-check-input:checked { background-color: var(--green); border-color: var(--green); }
+
+    footer { background: #142d27; color: #d5ded8; }
+    footer a { color: #d5ded8; }
+    footer a:hover { color: var(--lime); }
+    .footer-brand { color: #fff; font-weight: 700; }
+
+    .modal-content { border: 0; border-radius: 14px; }
+    .modal-header { border-bottom-color: var(--line); }
+    .toast { border: 1px solid var(--line); box-shadow: 0 8px 28px rgba(0,0,0,.12); }
+
+    @media (max-width: 767.98px) {
+      .hero-inner { padding-top: 55px; padding-bottom: 55px; }
+      .hero-card { margin: 28px auto 0; transform: none; }
+      .section-space { padding-top: 54px; padding-bottom: 54px; }
+      .course-card .card-text { min-height: 0; }
+      .signup-card { padding: 21px; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg site-nav sticky-top">
+    <div class="container py-1">
+      <a class="navbar-brand d-flex align-items-center" href="#home"><span class="brand-mark">W</span>WebCraft</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainMenu" aria-controls="mainMenu" aria-expanded="false" aria-label="Открыть меню">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="mainMenu">
+        <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
+          <li class="nav-item"><a class="nav-link" href="#courses">Курсы</a></li>
+          <li class="nav-item"><a class="nav-link" href="#process">Обучение</a></li>
+          <li class="nav-item"><a class="nav-link" href="#questions">Вопросы</a></li>
+          <li class="nav-item ms-lg-2 mt-2 mt-lg-0"><button class="btn btn-green" type="button" data-bs-toggle="modal" data-bs-target="#signupModal">Оставить заявку</button></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero" id="home">
+    <div class="container hero-inner">
+      <div class="row align-items-center g-5">
+        <div class="col-lg-7">
+          <div class="hero-label mb-3">Практика вместо скучной теории</div>
+          <h1 class="mb-4">Учись делать сайты своими руками</h1>
+          <p class="hero-copy mb-4">На курсах WebCraft можно разобраться с вёрсткой, JavaScript и дизайном. Будем разбирать примеры и собирать свои проекты.</p>
+          <div class="d-flex flex-wrap gap-3 align-items-center">
+            <a href="#courses" class="btn btn-lime btn-lg">Посмотреть курсы</a>
+            <span class="small text-white-50">Для новичков и тех, кто хочет больше практики</span>
+          </div>
+        </div>
+        <div class="col-lg-5">
+          <div class="hero-card">
+            <div class="hero-card-top">
+              <div><div class="small text-secondary">План занятий</div><strong>Мой первый сайт</strong></div>
+              <span class="badge rounded-pill text-bg-success">Старт</span>
+            </div>
+            <div class="code-line"><span>01</span> &nbsp; HTML - структура страницы</div>
+            <div class="code-line"><span>02</span> &nbsp; CSS - внешний вид</div>
+            <div class="code-line"><span>03</span> &nbsp; Bootstrap - адаптивность</div>
+            <div class="code-line"><span>04</span> &nbsp; JavaScript - действия</div>
+            <div class="d-flex justify-content-between mt-3 hero-note"><span>Практические задания</span><strong>4 темы</strong></div>
+            <div class="progress mt-2" role="progressbar" aria-label="План курса" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="height: 7px"><div class="progress-bar bg-success" style="width: 75%"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="container notice-wrap">
+    <div class="alert alert-warning notice alert-dismissible fade show d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 mb-0" role="alert">
+      <div><strong>Открыта запись на обучение.</strong> Можно выбрать курс и оставить заявку прямо на сайте.</div>
+      <a href="#signup" class="btn btn-sm btn-outline-dark">Выбрать курс</a>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Закрыть"></button>
+    </div>
+  </div>
+
+  <main>
+    <section class="section-space" id="courses">
+      <div class="container">
+        <div class="row align-items-end mb-4 g-3">
+          <div class="col-md-8">
+            <div class="eyebrow mb-2">Направления</div>
+            <h2 class="section-heading mb-2">Выбери, что интересно</h2>
+            <p class="section-lead mb-0">В каждом курсе есть короткие уроки и задания. После обучения останется несколько работ для портфолио.</p>
+          </div>
+          <div class="col-md-4 text-md-end"><span class="badge rounded-pill text-bg-light border text-dark p-2">3 учебных направления</span></div>
+        </div>
+
+        <div class="row g-4">
+          <div class="col-12 col-md-6 col-lg-4">
+            <div class="card course-card">
+              <div class="course-top d-flex justify-content-between align-items-start"><span class="course-number">КУРС 01</span><span class="course-symbol">&lt;/&gt;</span></div>
+              <div class="card-body">
+                <div class="mb-2"><span class="badge text-bg-success">Начальный уровень</span></div>
+                <h3 class="card-title">HTML и CSS</h3>
+                <p class="card-text">Научишься делать разметку, работать с цветами, шрифтами и расположением блоков.</p>
+                <div class="d-flex justify-content-between course-meta mb-3"><span>6 недель</span><span>2 проекта</span></div>
+                <button class="btn btn-outline-green w-100" data-bs-toggle="modal" data-bs-target="#signupModal" data-course="HTML и CSS">Выбрать курс</button>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-md-6 col-lg-4">
+            <div class="card course-card">
+              <div class="course-top d-flex justify-content-between align-items-start"><span class="course-number">КУРС 02</span><span class="course-symbol">JS</span></div>
+              <div class="card-body">
+                <div class="mb-2"><span class="badge text-bg-warning">Средний уровень</span></div>
+                <h3 class="card-title">JavaScript</h3>
+                <p class="card-text">Разберём переменные, функции, события и научимся добавлять на страницу интерактивные элементы.</p>
+                <div class="d-flex justify-content-between course-meta mb-3"><span>8 недель</span><span>3 проекта</span></div>
+                <button class="btn btn-outline-green w-100" data-bs-toggle="modal" data-bs-target="#signupModal" data-course="JavaScript">Выбрать курс</button>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-md-6 col-lg-4">
+            <div class="card course-card">
+              <div class="course-top d-flex justify-content-between align-items-start"><span class="course-number">КУРС 03</span><span class="course-symbol">UI</span></div>
+              <div class="card-body">
+                <div class="mb-2"><span class="badge text-bg-info">Дизайн</span></div>
+                <h3 class="card-title">Дизайн интерфейсов</h3>
+                <p class="card-text">Поговорим о цветах, шрифтах и удобстве. Сделаем макет страницы в Figma.</p>
+                <div class="d-flex justify-content-between course-meta mb-3"><span>5 недель</span><span>2 макета</span></div>
+                <button class="btn btn-outline-green w-100" data-bs-toggle="modal" data-bs-target="#signupModal" data-course="Дизайн интерфейсов">Выбрать курс</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="soft-section section-space" id="process">
+      <div class="container">
+        <div class="row g-5 align-items-center">
+          <div class="col-lg-5">
+            <div class="eyebrow mb-2">Как всё устроено</div>
+            <h2 class="section-heading mb-3">Обучение по шагам</h2>
+            <p class="section-lead mb-4">Не нужно сразу знать всё. Сначала разбираем тему, потом пробуем её на практике и в конце собираем готовую работу.</p>
+            <div class="nav flex-column nav-pills learning-tabs gap-2" id="learningTabs" role="tablist" aria-orientation="vertical">
+              <button class="nav-link active text-start" id="tab-lessons" data-bs-toggle="pill" data-bs-target="#pane-lessons" type="button" role="tab" aria-controls="pane-lessons" aria-selected="true"><span class="step-number me-2">1</span> Уроки и примеры</button>
+              <button class="nav-link text-start" id="tab-practice" data-bs-toggle="pill" data-bs-target="#pane-practice" type="button" role="tab" aria-controls="pane-practice" aria-selected="false"><span class="step-number me-2">2</span> Практические задания</button>
+              <button class="nav-link text-start" id="tab-project" data-bs-toggle="pill" data-bs-target="#pane-project" type="button" role="tab" aria-controls="pane-project" aria-selected="false"><span class="step-number me-2">3</span> Свой проект</button>
+            </div>
+          </div>
+          <div class="col-lg-7">
+            <div class="tab-content" id="learningTabsContent">
+              <div class="tab-pane fade show active" id="pane-lessons" role="tabpanel" aria-labelledby="tab-lessons" tabindex="0">
+                <div class="tab-panel"><span class="badge text-bg-success mb-3">Первый этап</span><h3>Сначала разбираемся в теме</h3><p class="text-secondary mb-0">В уроках показываем основные инструменты и разбираем примеры. Все новые слова объясняются на простых задачах.</p></div>
+              </div>
+              <div class="tab-pane fade" id="pane-practice" role="tabpanel" aria-labelledby="tab-practice" tabindex="0">
+                <div class="tab-panel"><span class="badge text-bg-warning mb-3">Второй этап</span><h3>Пробуем самостоятельно</h3><p class="text-secondary mb-0">После темы будет задание. Его можно выполнить по шагам и отправить на проверку преподавателю.</p></div>
+              </div>
+              <div class="tab-pane fade" id="pane-project" role="tabpanel" aria-labelledby="tab-project" tabindex="0">
+                <div class="tab-panel"><span class="badge text-bg-info mb-3">Третий этап</span><h3>Собираем свою работу</h3><p class="text-secondary mb-0">В конце курса нужно сделать небольшой сайт или макет. Его можно добавить в своё портфолио.</p></div>
+              </div>
+            </div>
+            <div class="row g-3 mt-2">
+              <div class="col-6"><div class="bg-white border rounded-3 p-3 h-100"><strong class="d-block">Небольшие группы</strong><span class="small text-secondary">Можно задать вопрос</span></div></div>
+              <div class="col-6"><div class="bg-white border rounded-3 p-3 h-100"><strong class="d-block">Проверка работ</strong><span class="small text-secondary">Есть обратная связь</span></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-space">
+      <div class="container">
+        <div class="row align-items-end mb-4">
+          <div class="col-md-8"><div class="eyebrow mb-2">Примеры работ</div><h2 class="section-heading mb-2">Что можно сделать на курсе</h2><p class="section-lead mb-0">Вместо одних конспектов будут небольшие готовые проекты.</p></div>
+          <div class="col-md-4 text-md-end small text-secondary mt-3 mt-md-0">Примеры учебных заданий</div>
+        </div>
+        <div id="workCarousel" class="carousel slide" data-bs-ride="carousel">
+          <div class="carousel-indicators">
+            <button type="button" data-bs-target="#workCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Первый пример"></button>
+            <button type="button" data-bs-target="#workCarousel" data-bs-slide-to="1" aria-label="Второй пример"></button>
+            <button type="button" data-bs-target="#workCarousel" data-bs-slide-to="2" aria-label="Третий пример"></button>
+          </div>
+          <div class="carousel-inner pb-5">
+            <div class="carousel-item active">
+              <div class="row justify-content-center"><div class="col-md-9 col-lg-8"><div class="card work-card"><div class="row g-0 align-items-center"><div class="col-md-6"><div class="mock-window"><div class="mock-bar"></div><div class="mock-hero"><small>MY PORTFOLIO</small><i></i><i style="width:35%"></i></div><div class="mock-blocks"><span></span><span></span><span></span></div></div></div><div class="col-md-6"><div class="card-body p-4"><span class="badge text-bg-success mb-2">HTML + CSS</span><h3 class="h4">Личное портфолио</h3><p class="text-secondary mb-0">Страница о себе, навыках и проектах. Хорошее первое задание для практики вёрстки.</p></div></div></div></div></div></div>
+            </div>
+            <div class="carousel-item">
+              <div class="row justify-content-center"><div class="col-md-9 col-lg-8"><div class="card work-card"><div class="row g-0 align-items-center"><div class="col-md-6"><div class="mock-window"><div class="mock-bar"></div><div class="mock-hero" style="background:#8a6848"><small>COFFEE SHOP</small><i style="background:#f0d7a6"></i><i style="width:42%;background:#f0d7a6"></i></div><div class="mock-blocks"><span></span><span></span><span></span></div></div></div><div class="col-md-6"><div class="card-body p-4"><span class="badge text-bg-warning mb-2">АДАПТИВНАЯ ВЁРСТКА</span><h3 class="h4">Сайт кофейни</h3><p class="text-secondary mb-0">Небольшой сайт с меню, адресом и формой обратной связи. Нужно сделать его удобным для телефона.</p></div></div></div></div></div></div>
+            </div>
+            <div class="carousel-item">
+              <div class="row justify-content-center"><div class="col-md-9 col-lg-8"><div class="card work-card"><div class="row g-0 align-items-center"><div class="col-md-6"><div class="mock-window"><div class="mock-bar"></div><div class="mock-hero" style="background:#52617b"><small>TASK LIST</small><i style="background:#d6ef82"></i><i style="width:48%;background:#d6ef82"></i></div><div class="mock-blocks"><span></span><span></span><span></span></div></div></div><div class="col-md-6"><div class="card-body p-4"><span class="badge text-bg-info mb-2">JAVASCRIPT</span><h3 class="h4">Список задач</h3><p class="text-secondary mb-0">Простое приложение, в котором можно добавлять задачи и отмечать выполненные.</p></div></div></div></div></div></div>
+            </div>
+          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#workCarousel" data-bs-slide="prev"><span class="carousel-control-prev-icon" aria-hidden="true"></span><span class="visually-hidden">Назад</span></button>
+          <button class="carousel-control-next" type="button" data-bs-target="#workCarousel" data-bs-slide="next"><span class="carousel-control-next-icon" aria-hidden="true"></span><span class="visually-hidden">Вперёд</span></button>
+        </div>
+      </div>
+    </section>
+
+    <section class="soft-section section-space" id="questions">
+      <div class="container">
+        <div class="row g-5">
+          <div class="col-lg-5"><div class="eyebrow mb-2">Перед началом</div><h2 class="section-heading mb-3">Частые вопросы</h2><p class="section-lead">Собрал короткие ответы на вопросы, которые могут появиться перед записью.</p></div>
+          <div class="col-lg-7">
+            <div class="accordion" id="faqAccordion">
+              <div class="accordion-item"><h3 class="accordion-header"><button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faqOne" aria-expanded="true" aria-controls="faqOne">Нужен ли опыт в программировании?</button></h3><div id="faqOne" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion"><div class="accordion-body text-secondary">Для курса HTML и CSS опыт не нужен. Начинаем с основ и постепенно переходим к более сложным заданиям.</div></div></div>
+              <div class="accordion-item"><h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqTwo" aria-expanded="false" aria-controls="faqTwo">Что нужно для занятий?</button></h3><div id="faqTwo" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body text-secondary">Понадобится компьютер, браузер и редактор кода. Для дизайна интерфейсов будем использовать Figma.</div></div></div>
+              <div class="accordion-item"><h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqThree" aria-expanded="false" aria-controls="faqThree">Будут ли практические задания?</button></h3><div id="faqThree" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body text-secondary">Да. После основных тем будут задания, а в конце курса нужно подготовить небольшой проект.</div></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="signup-section section-space" id="signup">
+      <div class="container">
+        <div class="row align-items-center g-5">
+          <div class="col-lg-5">
+            <div class="eyebrow mb-2" style="color:var(--lime)">Запись на курс</div>
+            <h2 class="section-heading mb-3">Оставь заявку</h2>
+            <p class="section-lead mb-4">Заполни форму, чтобы выбрать направление. Это учебный пример формы, данные никуда не отправляются.</p>
+            <div class="d-flex gap-3 align-items-center"><span class="step-number">1</span><span>Укажи свои контакты</span></div>
+            <div class="d-flex gap-3 align-items-center mt-3"><span class="step-number">2</span><span>Выбери интересующий курс</span></div>
+            <div class="d-flex gap-3 align-items-center mt-3"><span class="step-number">3</span><span>Нажми кнопку отправки</span></div>
+          </div>
+          <div class="col-lg-7">
+            <div class="signup-card">
+              <form id="mainForm" class="needs-validation" novalidate>
+                <div class="row g-3">
+                  <div class="col-md-6"><label class="form-label" for="userName">Имя</label><input class="form-control" id="userName" name="name" type="text" placeholder="Как к вам обращаться" required><div class="invalid-feedback">Напишите имя.</div></div>
+                  <div class="col-md-6"><label class="form-label" for="userEmail">E-mail</label><input class="form-control" id="userEmail" name="email" type="email" placeholder="name@example.com" required><div class="invalid-feedback">Укажите правильный e-mail.</div></div>
+                  <div class="col-12"><label class="form-label" for="courseSelect">Курс</label><select class="form-select" id="courseSelect" name="course" required><option value="" selected disabled>Выберите направление</option><option>HTML и CSS</option><option>JavaScript</option><option>Дизайн интерфейсов</option></select><div class="invalid-feedback">Выберите курс из списка.</div></div>
+                  <div class="col-12"><div class="form-check"><input class="form-check-input" id="agree" type="checkbox" required><label class="form-check-label" for="agree">Согласен на обработку персональных данных</label><div class="invalid-feedback">Нужно отметить согласие.</div></div></div>
+                  <div class="col-12"><button class="btn btn-green btn-lg w-100" type="submit">Отправить заявку</button></div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="py-4">
+    <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
+      <div><div class="footer-brand">WebCraft</div><div class="small">Учебный проект по Bootstrap 5</div></div>
+      <div class="small">© 2025 WebCraft. Все права защищены.</div>
+      <div class="d-flex gap-3 small"><a href="#courses">Курсы</a><a href="#questions">Вопросы</a><a href="#signup">Контакты</a></div>
+    </div>
+  </footer>
+
+  <div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header"><div><h2 class="modal-title fs-5" id="signupModalLabel">Запись на обучение</h2><p class="small text-secondary mb-0">Оставь контакты и выбери курс</p></div><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button></div>
+        <div class="modal-body">
+          <form id="modalForm" class="needs-validation" novalidate>
+            <div class="mb-3"><label class="form-label" for="modalName">Имя</label><input class="form-control" id="modalName" type="text" required><div class="invalid-feedback">Напишите имя.</div></div>
+            <div class="mb-3"><label class="form-label" for="modalEmail">E-mail</label><input class="form-control" id="modalEmail" type="email" required><div class="invalid-feedback">Укажите правильный e-mail.</div></div>
+            <div class="mb-3"><label class="form-label" for="modalCourse">Курс</label><select class="form-select" id="modalCourse" required><option value="" selected disabled>Выберите курс</option><option>HTML и CSS</option><option>JavaScript</option><option>Дизайн интерфейсов</option></select><div class="invalid-feedback">Выберите курс.</div></div>
+            <button class="btn btn-green w-100" type="submit">Отправить</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="successToast" class="toast" role="status" aria-live="polite" aria-atomic="true">
+      <div class="toast-header"><span class="brand-mark me-2" style="width:24px;height:24px;font-size:.8rem">W</span><strong class="me-auto">WebCraft</strong><small>Сейчас</small><button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Закрыть"></button></div>
+      <div class="toast-body">Форма заполнена. В реальном сайте заявка отправилась бы менеджеру.</div>
+    </div>
+  </div>
+
+  <script src="js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Валидация форм Bootstrap
+    (() => {
+      'use strict';
+      const forms = document.querySelectorAll('.needs-validation');
+      const toastElement = document.getElementById('successToast');
+      const successToast = bootstrap.Toast.getOrCreateInstance(toastElement);
+
+      forms.forEach((form) => {
+        form.addEventListener('submit', (event) => {
+          event.preventDefault();
+          event.stopPropagation();
+
+          if (!form.checkValidity()) {
+            form.classList.add('was-validated');
+            return;
+          }
+
+          form.classList.add('was-validated');
+          successToast.show();
+          form.reset();
+          form.classList.remove('was-validated');
+
+          const modalElement = document.getElementById('signupModal');
+          if (form.id === 'modalForm') {
+            bootstrap.Modal.getOrCreateInstance(modalElement).hide();
+          }
+        });
+      });
+
+      // Подставляем курс в модальное окно из карточки
+      document.querySelectorAll('[data-course]').forEach((button) => {
+        button.addEventListener('click', () => {
+          const course = button.getAttribute('data-course');
+          document.getElementById('modalCourse').value = course;
+        });
+      });
+
+      // Подсказка при наведении на заголовок главного блока
+      const heroTitle = document.querySelector('.hero h1');
+      new bootstrap.Tooltip(heroTitle, {
+        title: 'Выбери курс и начни с простых заданий',
+        placement: 'bottom'
+      });
+    })();
+  </script>
+</body>
+</html>
